@@ -1,3 +1,7 @@
+Given /^I am a new visitor$/ do
+  clear_cookies
+end
+
 When /^I view "([^\"]*)"$/ do |path|
   get path
 end
