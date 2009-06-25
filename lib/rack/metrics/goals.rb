@@ -8,6 +8,14 @@ module Rack
       get "/_metrics/goals" do
         erb :listing
       end
+      
+      get "/_metrics/goals/new" do
+        erb :new
+      end
+      
+      def storage=(storage)
+        @storage = storage
+      end
     end
   end
 end

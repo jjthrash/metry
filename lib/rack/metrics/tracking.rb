@@ -18,7 +18,8 @@ module Rack
           "path" => env["PATH_INFO"],
           "time" => Time.now.to_i,
           "visitor" => visitor)
-        response = Response.new(yield)
+        status, headers, body = yield
+        response = Response.new(body, status, headers)
         save_visitor(response, visitor)
         response.to_a
       end

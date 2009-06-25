@@ -1,5 +1,8 @@
 Given /^an empty tracking database$/ do
-  File.delete(TRACKING_FILE)
+  begin
+    File.delete(TRACKING_FILE)
+  rescue Errno::ENOENT
+  end
 end
 
 Then /^there should be (\d+) tracking entr(?:y|ies)$/ do |entries|

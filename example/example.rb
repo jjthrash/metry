@@ -9,7 +9,9 @@ configure do
   TRACKING_FILE = "tracking.db"
   metrics_storage = Rack::Metrics::Storage::Marshal.new(TRACKING_FILE)
   use Rack::Metrics::Tracking, metrics_storage
-  use Rack::Metrics::Goals, metrics_storage
+  use Rack::Metrics::Goals do |app|
+    app.storage = metrics_storage
+  end
 end
 
 get '/' do
