@@ -1,6 +1,8 @@
 module Rack
   module Metrics
     class Tracking
+      EXTRA = "metrics.extra"
+
       def initialize(app, storage)
         @app = app
         @storage = storage
@@ -13,13 +15,21 @@ module Rack
       end
       
       def track(env)
+        request = Request.new(env)
         visitor = find_visitor(env)
-        @storage.add_entry(
-          "path" => env["PATH_INFO"],
-          "time" => Time.now.to_i,
-          "visitor" => visitor)
+        env[EXTRA] = {}
         status, headers, body = yield
         response = Response.new(body, status, headers)
+        entry = {
+          "metrics.path" => request.fullpath,
+          "metrics.time" => Time.now.to_f,
+          "metrics.visitor" => visitor,
+          "metrics.ip" => request.ip,
+          "metrics.host" => request.host,
+          "metrics.status" => status.to_s,
+          "metrics.method" => request.request_method}
+        entry.update(env[EXTRA])
+        @storage.add_entry(entry)
         save_visitor(response, visitor)
         response.to_a
       end

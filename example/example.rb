@@ -3,15 +3,10 @@ require 'sinatra'
 
 require File.dirname(__FILE__) + '/../lib/rack/metrics/tracking'
 require File.dirname(__FILE__) + '/../lib/rack/metrics/storage'
-require File.dirname(__FILE__) + '/../lib/rack/metrics/goals'
 
 configure do
   TRACKING_FILE = "tracking.db"
-  metrics_storage = Rack::Metrics::Storage::Marshal.new(TRACKING_FILE)
-  use Rack::Metrics::Tracking, metrics_storage
-  use Rack::Metrics::Goals do |app|
-    app.storage = metrics_storage
-  end
+  use Rack::Metrics::Tracking, Rack::Metrics::Storage::Marshal.new(TRACKING_FILE)
 end
 
 get '/' do
@@ -20,4 +15,8 @@ end
 
 get '/subpage' do
   "Sub page"
+end
+
+get '/extra' do
+  request.env[Rack::Metrics::Tracking::EXTRA]["extra"] = params[:track]
 end
