@@ -9,22 +9,22 @@ Feature: Access Tracking
   
   Scenario: Single gets are tracked
     When I view "/"
-    Then there should be 1 tracking entry
+    Then there should be 1 tracking event
     
   Scenario: Multiple gets are tracked
     When I view "/"
     And I view "/"
     And I view "/"
-    Then there should be 3 tracking entries
+    Then there should be 3 tracking events
     
   Scenario: Basic request data is tracked
     When I view "/"
     And I view "/subpage"
-    Then there should be a tracking entry "0":
+    Then there should be a tracking event "1":
       | key          | value    |
       | metrics.path | /        |
       | metrics.time | _exists_ |
-    And there should be a tracking entry "1":
+    And there should be a tracking event "2":
       | key          | value    |
       | metrics.path | /subpage |
       | metrics.time | _exists_ |
@@ -32,27 +32,27 @@ Feature: Access Tracking
   Scenario: New visitor is tracked
     When I view "/"
     And I view "/subpage"
-    Then there should be a tracking entry "0":
+    Then there should be a tracking event "1":
       | key             | value |
-      | metrics.visitor | 0     |
-    And there should be a tracking entry "1":
+      | metrics.visitor | 1     |
+    And there should be a tracking event "2":
       | key             | value |
-      | metrics.visitor | 0     |
+      | metrics.visitor | 1     |
 
   Scenario: Two visitors are tracked
     Given I view "/"
     When I am a new visitor
     Given I view "/"
-    Then there should be a tracking entry "0":
-      | key             | value |
-      | metrics.visitor | 0     |
-    And there should be a tracking entry "1":
+    Then there should be a tracking event "1":
       | key             | value |
       | metrics.visitor | 1     |
+    And there should be a tracking event "2":
+      | key             | value |
+      | metrics.visitor | 2     |
       
   Scenario: All facets should be tracked
     When I view "/"
-    Then there should be a tracking entry "0":
+    Then there should be a tracking event "1":
       | key          | value       |
       | metrics.path | /           |
       | metrics.time | _exists_    |
@@ -61,17 +61,17 @@ Feature: Access Tracking
 
   Scenario: path should include query string
     When I view "/?here=there"
-    Then there should be a tracking entry "0":
+    Then there should be a tracking event "1":
       | key          | value        |
       | metrics.path | /?here=there |
       
   Scenario: Should track status codes
     When I view "/"
     And I view "/missing"
-    Then there should be a tracking entry "0":
+    Then there should be a tracking event "1":
       | key            | value |
       | metrics.status | 200   |
-    Then there should be a tracking entry "1":
+    Then there should be a tracking event "2":
       | key            | value |
       | metrics.status | 404   |
 
@@ -80,9 +80,9 @@ Feature: Access Tracking
     And I post to "/post":
       | key   | value |
       | bogus | bogus |
-    Then there should be a tracking entry "0":
+    Then there should be a tracking event "1":
       | key            | value |
       | metrics.method | GET   |
-    Then there should be a tracking entry "1":
+    Then there should be a tracking event "2":
       | key            | value |
       | metrics.method | POST  |

@@ -1,25 +1,21 @@
 Given /^an empty tracking database$/ do
-  begin
-    File.delete(TRACKING_FILE)
-  rescue Errno::ENOENT
-  end
+  TRACKING_STORAGE.clear
 end
 
-Then /^there should be (\d+) tracking entr(?:y|ies)$/ do |entries|
-  Marshal.load(File.read(TRACKING_FILE)).size == entries.to_i
+Then /^there should be (\d+) tracking events?$/ do |event_count|
+  TRACKING_STORAGE.size == event_count.to_i
 end
 
-When /^there should be a tracking entry "(\d+)":$/ do |id, table|
-  storage = Marshal.load(File.read(TRACKING_FILE))
-  entry = storage["entries"][id.to_i]
-  assert entry, "Unable to lookup entry #{id} in #{storage.inspect}."
+When /^there should be a tracking event "(\d+)":$/ do |id, table|
+  event = TRACKING_STORAGE[id]
+  assert event, "Unable to lookup event #{id} in #{TRACKING_STORAGE.inspect}."
   table.hashes.each do |hash|
     expected = hash["value"]
     case expected
     when "_exists_"
-      assert entry[hash["key"]], "Key #{hash["key"]} does not exist."
+      assert event[hash["key"]], "Key #{hash["key"]} does not exist."
     else
-      assert_equal expected, entry[hash["key"]], "Key #{hash["key"]} does not match in #{storage.inspect}."
+      assert_equal expected, event[hash["key"]], "Key #{hash["key"]} does not match in #{TRACKING_STORAGE.inspect}."
     end
   end
 end

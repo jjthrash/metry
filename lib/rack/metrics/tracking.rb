@@ -1,7 +1,9 @@
 module Rack
   module Metrics
     class Tracking
-      EXTRA = "metrics.extra"
+      EXTRA = "METRICS_EXTRA"
+      PAGEVIEW = "PAGEVIEW"
+      COOKIE = "_rack_metrics"
 
       def initialize(app, storage)
         @app = app
@@ -20,7 +22,14 @@ module Rack
         env[EXTRA] = {}
         status, headers, body = yield
         response = Response.new(body, status, headers)
-        entry = {
+        @storage << build_event(env, visitor, request, status)
+        save_visitor(response, visitor)
+        response.to_a
+      end
+      
+      def build_event(env, visitor, request, status)
+        event = {
+          "metrics.event" => PAGEVIEW,
           "metrics.path" => request.fullpath,
           "metrics.time" => Time.now.to_f,
           "metrics.visitor" => visitor,
@@ -28,18 +37,16 @@ module Rack
           "metrics.host" => request.host,
           "metrics.status" => status.to_s,
           "metrics.method" => request.request_method}
-        entry.update(env[EXTRA])
-        @storage.add_entry(entry)
-        save_visitor(response, visitor)
-        response.to_a
+        event.update(env[EXTRA])
+        event
       end
       
       def find_visitor(env)
-        (Request.new(env).cookies["_rack_tracking"] || @storage.next_visitor.to_s)
+        (Request.new(env).cookies[COOKIE] || @storage.next_visitor.to_s)
       end
       
       def save_visitor(response, visitor)
-        response.set_cookie("_rack_tracking", visitor)
+        response.set_cookie(COOKIE, visitor)
       end
     end
   end

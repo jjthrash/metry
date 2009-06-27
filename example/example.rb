@@ -1,12 +1,15 @@
 require 'rubygems'
 require 'sinatra'
 
-require File.dirname(__FILE__) + '/../lib/rack/metrics/tracking'
-require File.dirname(__FILE__) + '/../lib/rack/metrics/storage'
+$: << File.dirname(__FILE__) + '/../lib'
+require 'rack/metrics/tracking'
+require 'rack/metrics/storage/tokyo'
+#require 'rack/metrics/storage/memory'
 
 configure do
-  TRACKING_FILE = "tracking.db"
-  use Rack::Metrics::Tracking, Rack::Metrics::Storage::Marshal.new(TRACKING_FILE)
+  TRACKING_STORAGE = Rack::Metrics::Storage::Tokyo.new("tracking")
+  #TRACKING_STORAGE = Rack::Metrics::Storage::Memory.new
+  use Rack::Metrics::Tracking, TRACKING_STORAGE
 end
 
 get '/' do

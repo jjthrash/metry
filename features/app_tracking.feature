@@ -6,6 +6,6 @@ Feature: Application Tracking
   Scenario: Track an additional facet
     Given an empty tracking database
     When I view "/extra?track=stuff"
-    Then there should be a tracking entry "0":
+    Then there should be a tracking event "1":
       | key   | value |
       | extra | stuff |
