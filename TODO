@@ -1,1 +1,8 @@
-Switch to Tokyo Cabinet
+Add Radiant support
+
+Make sure cookies persist long-term
+Add support for non-pageview event tracking
+  Via in-process call
+  Via web request
+
+Add support for MongoDB

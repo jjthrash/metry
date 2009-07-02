@@ -10,15 +10,13 @@ Webrat.configure do |config|
   config.mode = :rack_test
 end
 
-require File.dirname(__FILE__) + '/../../example/example.rb'
+World(Rack::Test::Methods)
+World(Webrat::Methods)
+World(Webrat::Matchers)
 
-World do
-  def app
-    @app = Rack::Builder.new do
-      run Sinatra::Application
-    end
+require File.dirname(__FILE__) + '/../../fixtures/sinatra/example.rb'
+def app
+  Rack::Builder.new do
+    run Sinatra::Application
   end
-  include Rack::Test::Methods
-  include Webrat::Methods
-  include Webrat::Matchers
 end

@@ -1,15 +1,12 @@
 require 'rubygems'
 require 'sinatra'
 
-$: << File.dirname(__FILE__) + '/../lib'
-require 'rack/metrics/tracking'
-require 'rack/metrics/storage/tokyo'
-#require 'rack/metrics/storage/memory'
+require File.dirname(__FILE__) + '/../../lib/metry'
 
 configure do
-  TRACKING_STORAGE = Rack::Metrics::Storage::Tokyo.new("tracking")
-  #TRACKING_STORAGE = Rack::Metrics::Storage::Memory.new
-  use Rack::Metrics::Tracking, TRACKING_STORAGE
+  METRY = Metry::Tokyo.new("tracking")
+  #METRY = Metry::Memory.new
+  use Metry::Rack::Tracking, METRY
 end
 
 get '/' do
@@ -21,5 +18,5 @@ get '/subpage' do
 end
 
 get '/extra' do
-  request.env[Rack::Metrics::Tracking::EXTRA]["extra"] = params[:track]
+  request.env[Metry::Middleware::EXTRA]["extra"] = params[:track]
 end

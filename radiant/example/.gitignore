@@ -1,0 +1,6 @@
+cache
+db/*.db
+log
+tmp
+tracking
+webrat.log

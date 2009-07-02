@@ -1,4 +1,4 @@
-Feature: Basics Work
+Feature: Basic Sinatra application works
   In order to test rack middleware
   As a middleware creator
   I want an example application that I can test against
