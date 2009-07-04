@@ -15,7 +15,4 @@ config.action_controller.allow_forgery_protection    = false
 # ActionMailer::Base.deliveries array.
 config.action_mailer.delivery_method = :test
 
-require RAILS_ROOT + '/../../lib/metry'
-METRY = Metry::Tokyo.new(RAILS_ROOT + '/tracking/tracking')
-
-config.middleware.insert_after ActionController::Failsafe, Metry::Rack::Tracking, METRY
+require 'pp'

@@ -1,7 +1,7 @@
 require 'rubygems'
 require 'sinatra'
 
-require File.dirname(__FILE__) + '/../../lib/metry'
+require File.dirname(__FILE__) + '/../lib/metry'
 
 configure do
   METRY = Metry::Tokyo.new("tracking")
@@ -18,5 +18,5 @@ get '/subpage' do
 end
 
 get '/extra' do
-  request.env[Metry::Middleware::EXTRA]["extra"] = params[:track]
+  request.env["metry.event"]["extra"] = params[:track]
 end

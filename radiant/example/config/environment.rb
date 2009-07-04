@@ -74,5 +74,10 @@ Radiant::Initializer.run do |config|
     ActiveSupport::Inflector.inflections do |inflect|
       inflect.uncountable 'config'
     end
+
+    require RAILS_ROOT + '/../../lib/metry'
+    METRY = Metry::Tokyo.new(RAILS_ROOT + '/tracking/tracking')
+
+    config.middleware.insert_after ActionController::Failsafe, Metry::Rack::Tracking, METRY
   end
 end

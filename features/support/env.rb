@@ -14,7 +14,7 @@ World(Rack::Test::Methods)
 World(Webrat::Methods)
 World(Webrat::Matchers)
 
-require File.dirname(__FILE__) + '/../../fixtures/sinatra/example.rb'
+require File.dirname(__FILE__) + '/../../example/example.rb'
 def app
   Rack::Builder.new do
     run Sinatra::Application

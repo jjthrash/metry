@@ -4,3 +4,4 @@ log
 tmp
 tracking
 webrat.log
+webrat-*.html

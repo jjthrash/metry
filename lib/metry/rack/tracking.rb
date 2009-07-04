@@ -1,9 +1,7 @@
 module Metry
   module Rack
     class Tracking
-      EXTRA = "METRICS_EXTRA"
-      PAGEVIEW = "PAGEVIEW"
-      COOKIE = "_rack_metrics"
+      COOKIE = "_metry"
 
       def initialize(app, storage)
         @app = app
@@ -11,34 +9,29 @@ module Metry
       end
     
       def call(env)
-        track(env) do
-          @app.call(env)
-        end
-      end
-    
-      def track(env)
         request = ::Rack::Request.new(env)
         visitor = find_visitor(request)
-        env[EXTRA] = {}
-        status, headers, body = yield
+        env["metry.event"] = event = build_event(visitor, request)
+
+        status, headers, body = @app.call(env)
+
+        event["status"] = status.to_s
+        @storage << event
+
         response = ::Rack::Response.new(body, status, headers)
-        @storage << build_event(env, visitor, request, status)
         save_visitor(response, visitor)
+
         response.to_a
       end
     
-      def build_event(env, visitor, request, status)
-        event = {
-          "metrics.event" => PAGEVIEW,
-          "metrics.path" => request.fullpath,
-          "metrics.time" => Time.now.to_f,
-          "metrics.visitor" => visitor,
-          "metrics.ip" => request.ip,
-          "metrics.host" => request.host,
-          "metrics.status" => status.to_s,
-          "metrics.method" => request.request_method}
-        event.update(env[EXTRA])
-        event
+      def build_event(visitor, request)
+        { "event" => "pageview",
+          "path" => request.fullpath,
+          "time" => Time.now.to_f,
+          "visitor" => visitor,
+          "ip" => request.ip,
+          "host" => request.host,
+          "method" => request.request_method }
       end
     
       def find_visitor(request)

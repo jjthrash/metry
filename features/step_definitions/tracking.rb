@@ -19,3 +19,17 @@ When /^there should be a tracking event "(\d+)":$/ do |id, table|
     end
   end
 end
+
+Then /^there should be a visitor "([^\"]*)":$/ do |id, table|
+  visitor = METRY.visitor(id)
+  assert visitor, "Unable to lookup visitor #{id} in #{METRY.inspect}."
+  table.hashes.each do |hash|
+    expected = hash["value"]
+    case expected
+    when "_exists_"
+      assert visitor[hash["key"]], "Key #{hash["key"]} does not exist."
+    else
+      assert_equal expected, visitor[hash["key"]], "Key #{hash["key"]} does not match in #{METRY.inspect}."
+    end
+  end
+end

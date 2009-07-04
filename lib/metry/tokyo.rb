@@ -9,12 +9,22 @@ module Metry
   class Tokyo
     def initialize(file, interface="Edo")
       FileUtils.mkdir_p(::File.dirname(file))
-      @events = Rufus.const_get(interface)::Table.new(file + ".events.tdb")
-      @meta = Rufus.const_get(interface)::Cabinet.new(file + ".meta.tch")
+      store = Rufus.const_get(interface)
+      @events = store::Table.new(file + ".events.tdb")
+      @meta = store::Cabinet.new(file + ".meta.tch")
+      @visitors = store::Table.new(file + ".visitors.tdb")
     end
     
     def next_visitor
       @meta.incr("visitor")
+    end
+    
+    def visitor(id)
+      (@visitors[id] || {})
+    end
+    
+    def save_visitor(id, hash)
+      @visitors[id] = hash
     end
     
     def next_event_id
@@ -36,6 +46,7 @@ module Metry
     def clear
       @events.clear
       @meta.clear
+      @visitors.clear
     end
   end
 end

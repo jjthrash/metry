@@ -21,59 +21,59 @@ Feature: Access Tracking
     When I view "/"
     And I view "/subpage"
     Then there should be a tracking event "1":
-      | key          | value    |
-      | metrics.path | /        |
-      | metrics.time | _exists_ |
+      | key  | value    |
+      | path | /        |
+      | time | _exists_ |
     And there should be a tracking event "2":
-      | key          | value    |
-      | metrics.path | /subpage |
-      | metrics.time | _exists_ |
+      | key  | value    |
+      | path | /subpage |
+      | time | _exists_ |
     
   Scenario: New visitor is tracked
     When I view "/"
     And I view "/subpage"
     Then there should be a tracking event "1":
-      | key             | value |
-      | metrics.visitor | 1     |
+      | key     | value |
+      | visitor | 1     |
     And there should be a tracking event "2":
-      | key             | value |
-      | metrics.visitor | 1     |
+      | key     | value |
+      | visitor | 1     |
 
   Scenario: Two visitors are tracked
     Given I view "/"
     When I am a new visitor
     Given I view "/"
     Then there should be a tracking event "1":
-      | key             | value |
-      | metrics.visitor | 1     |
+      | key     | value |
+      | visitor | 1     |
     And there should be a tracking event "2":
-      | key             | value |
-      | metrics.visitor | 2     |
+      | key     | value |
+      | visitor | 2     |
       
   Scenario: All facets should be tracked
     When I view "/"
     Then there should be a tracking event "1":
-      | key          | value       |
-      | metrics.path | /           |
-      | metrics.time | _exists_    |
-      | metrics.ip   | 127.0.0.1   |
-      | metrics.host | example.org |
+      | key  | value       |
+      | path | /           |
+      | time | _exists_    |
+      | ip   | 127.0.0.1   |
+      | host | example.org |
 
   Scenario: path should include query string
     When I view "/?here=there"
     Then there should be a tracking event "1":
       | key          | value        |
-      | metrics.path | /?here=there |
+      | path | /?here=there |
       
   Scenario: Should track status codes
     When I view "/"
     And I view "/missing"
     Then there should be a tracking event "1":
-      | key            | value |
-      | metrics.status | 200   |
+      | key    | value |
+      | status | 200   |
     Then there should be a tracking event "2":
-      | key            | value |
-      | metrics.status | 404   |
+      | key    | value |
+      | status | 404   |
 
   Scenario: Should track method
     When I view "/"
@@ -81,8 +81,8 @@ Feature: Access Tracking
       | key   | value |
       | bogus | bogus |
     Then there should be a tracking event "1":
-      | key            | value |
-      | metrics.method | GET   |
+      | key    | value |
+      | method | GET   |
     Then there should be a tracking event "2":
-      | key            | value |
-      | metrics.method | POST  |
+      | key    | value |
+      | method | POST  |
