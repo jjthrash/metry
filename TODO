@@ -1,4 +1,5 @@
 Add Radiant support
+More unit tests
 
 Make sure cookies persist long-term
 Add support for non-pageview event tracking

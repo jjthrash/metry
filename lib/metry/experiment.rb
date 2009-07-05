@@ -5,11 +5,11 @@ module Metry
       "mod_visitor" => proc{|list, visitor| list[(visitor.to_i-1)%list.size]},
     }
 
-    def initialize(name, event, storage)
+    def initialize(name, event)
       @key = "experiment.#{name}"
       @event = event
       @visitor = event["visitor"]
-      @storage = storage
+      @storage = Metry.current
     end
     
     def choose(options, method=nil)

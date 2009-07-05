@@ -12,7 +12,7 @@ module MetryTags
   tag "metry:experiment" do |tag|
     control = tag.expand
     options = tag.locals.alternatives.merge("control" => control)
-    Metry::Experiment.new(tag.attr["name"], tag.locals.event, METRY).choose(options, tag.attr["method"])
+    Metry::Experiment.new(tag.attr["name"], tag.locals.event).choose(options, tag.attr["method"])
   end
   
   desc %{ Alternatives go in here with a name. }

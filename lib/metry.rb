@@ -5,3 +5,13 @@ require 'metry/rack/tracking'
 require 'metry/memory'
 require 'metry/tokyo'
 require 'metry/experiment'
+
+module Metry
+  def self.init(storage)
+    @storage = storage
+  end
+  
+  def self.current
+    @storage
+  end
+end

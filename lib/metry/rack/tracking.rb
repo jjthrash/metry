@@ -3,9 +3,9 @@ module Metry
     class Tracking
       COOKIE = "_metry"
 
-      def initialize(app, storage)
+      def initialize(app)
         @app = app
-        @storage = storage
+        @storage = Metry.current
       end
     
       def call(env)
