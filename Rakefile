@@ -1,3 +1,11 @@
+require 'rubygems'
+require 'hoe'
+
+Hoe.spec 'metry' do
+  developer('Nathaniel Talbott', 'nathaniel@terralien.com')
+  self.rubyforge_name = 'terralien'
+end
+
 require 'cucumber/rake/task'
 
 Cucumber::Rake::Task.new(:basic_features) do |t|
@@ -12,9 +20,4 @@ task :radiant_features do
   end
 end
 
-require 'rake/testtask'
-Rake::TestTask.new do |t|
-  t.libs << "lib"
-end
-
-task :default => [:test, :basic_features, :radiant_features]
+task :test => [:basic_features, :radiant_features]

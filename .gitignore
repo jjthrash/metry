@@ -2,3 +2,4 @@ tracking.db
 webrat.log
 *.tdb
 *.tch
+pkg
