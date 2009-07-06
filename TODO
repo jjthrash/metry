@@ -1,5 +1,7 @@
 More unit tests
 
+Add a slick Sinatra app for viewing tracking data.
+
 Add support for non-pageview event tracking
   Via in-process call
   Via web request
