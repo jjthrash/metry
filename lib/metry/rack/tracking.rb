@@ -27,7 +27,7 @@ module Metry
       def build_event(visitor, request)
         { "event" => "pageview",
           "path" => request.fullpath,
-          "time" => Time.now.to_f,
+          "time" => Time.now.to_f.to_s.sub(/\.(\d+)/){|m| [$1[0...5].ljust(5, "0")]},
           "visitor" => visitor,
           "ip" => request.ip,
           "host" => request.host,

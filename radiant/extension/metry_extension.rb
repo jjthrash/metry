@@ -6,6 +6,19 @@ class MetryExtension < Radiant::Extension
   def activate
     Page.class_eval do
       include MetryTags
+      
+      def metry_active=(state)
+        @metry_active = state
+      end
+      
+      def metry_active?
+        @metry_active
+      end
+      
+      def cache_with_metry?
+        (cache_without_metry? && !metry_active?)
+      end
+      alias_method_chain :cache?, :metry
     end
   end
 end

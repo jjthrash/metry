@@ -3,6 +3,7 @@ module MetryTags
 
   desc %{ All metry-related tags live inside this one. }
   tag "metry" do |tag|
+    tag.globals.page.metry_active = true
     tag.locals.alternatives = {}
     tag.locals.event = tag.globals.page.request.env["metry.event"]
     tag.expand

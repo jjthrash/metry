@@ -5,6 +5,7 @@ Cucumber::Rake::Task.new(:basic_features) do |t|
   t.cucumber_opts = ['--format', (ENV['CUCUMBER_FORMAT'] || 'pretty')]
 end
 
+desc "Run Radiant features with Cucumber"
 task :radiant_features do
   Dir.chdir(File.dirname(__FILE__) + "/radiant/example") do
     Cucumber::Rake::Task::ForkedCucumberRunner.new([], Cucumber::BINARY, [], FileList["features/**/*.feature"]).run
