@@ -1,3 +1,7 @@
+=== 1.0.1 / 2009-07-06
+
+* Don't include the webrat selenium jar in the manifest.
+
 === 1.0.0 / 2009-07-06
 
 * 1 major enhancement

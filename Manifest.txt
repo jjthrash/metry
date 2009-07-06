@@ -373,4 +373,3 @@ vendor/webrat/spec/public/within_spec.rb
 vendor/webrat/spec/rcov.opts
 vendor/webrat/spec/spec.opts
 vendor/webrat/spec/spec_helper.rb
-vendor/webrat/vendor/selenium-server.jar
