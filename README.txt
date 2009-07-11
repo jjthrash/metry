@@ -29,6 +29,7 @@ Metry aims to close the gap between knowing you ought to be making decisions bas
 == REQUIREMENTS:
 
 * Tokyo Cabinet
+* Tokyo Cabinet Ruby Binding
 * Rack
 
 == INSTALL:

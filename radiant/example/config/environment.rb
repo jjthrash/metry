@@ -9,6 +9,8 @@ require File.join(File.dirname(__FILE__), 'boot')
 
 require 'radius'
 
+$:.unshift(RAILS_ROOT + "/../../lib")
+
 Radiant::Initializer.run do |config|
   # Skip frameworks you're not going to use (only works if using vendor/rails).
   # To use Rails without a database, you must remove the Active Record framework
@@ -74,10 +76,5 @@ Radiant::Initializer.run do |config|
     ActiveSupport::Inflector.inflections do |inflect|
       inflect.uncountable 'config'
     end
-
-    require RAILS_ROOT + '/../../lib/metry'
-    Metry.init Metry::Tokyo.new(RAILS_ROOT + '/tracking/tracking')
-
-    config.middleware.insert_after ActionController::Failsafe, Metry::Rack::Tracking
   end
 end
