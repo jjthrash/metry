@@ -31,6 +31,7 @@ Metry aims to close the gap between knowing you ought to be making decisions bas
 * Tokyo Cabinet
 * Tokyo Cabinet Ruby Binding
 * Rack
+* ffi gem
 
 == INSTALL:
 
