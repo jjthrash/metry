@@ -17,43 +17,71 @@ module Metry
     end
     
     def next_visitor
-      write do |storage|
+      access do |storage|
         storage.incr("#{META_PREFIX}visitor")
       end
     end
     
     def visitor(id)
-      read do |storage|
+      access do |storage|
         (storage[visitor_id(id)] || {})
       end
     end
     
-    def save_visitor(id, hash)
-      write do |storage|
-        storage[visitor_id(id)] = hash
+    def visitor_count
+      access do |storage|
+        storage.query do |q|
+          q.add '', :starts_with, VISITOR_PREFIX
+          q.pk_only
+        end.size
+      end
+    end
+    
+    def visitors
+      access do |storage|
+        r = storage.query do |q|
+          q.add '', :starts_with, VISITOR_PREFIX
+        end.to_a
+        r.each{|e| e[:pk].sub!(/^#{VISITOR_PREFIX}/, '')}
+        r
+      end
+    end
+    
+    def save_visitor(id, hash={})
+      access do |storage|
+        storage[visitor_id(id)] = (visitor(id) || {}).merge(hash)
       end
     end
     
     def <<(event)
-      write do |storage|
+      access do |storage|
         storage[next_event_id(storage)] = event.inject({}){|a,(k,v)| a[k] = v.to_s; a}
       end
     end
     
     def [](id)
-      read do |storage|
+      access do |storage|
         storage[event_id(id)]
       end
     end
     
     def event_count
-      read do |storage|
+      access do |storage|
         storage.keys(:prefix => EVENT_PREFIX).size
       end
     end
     
+    def events_for(visitor)
+      access do |storage|
+        storage.query do |q|
+          q.add '', :starts_with, EVENT_PREFIX
+          q.add 'visitor', :eq, visitor
+        end.to_a
+      end
+    end
+    
     def last_events(count=1)
-      read do |storage|
+      access do |storage|
         storage.query do |q|
           q.add '', :starts_with, EVENT_PREFIX
           q.order_by "time", :numdesc
@@ -63,7 +91,7 @@ module Metry
     end
     
     def all_events
-      read do |storage|
+      access do |storage|
         storage.query do |q|
           q.add '', :starts_with, EVENT_PREFIX
         end.to_a
@@ -71,7 +99,7 @@ module Metry
     end
     
     def clear
-      write do |storage|
+      access do |storage|
         storage.clear
       end
     end
@@ -82,22 +110,22 @@ module Metry
       event_id(storage.incr("#{META_PREFIX}event"))
     end
     
-    def access(mode)
-      storage = @store.new(@file, :mode => mode)
+    def access
+      key = "metry_storage"
+      created_storage ||= false
+      unless storage = Thread.current[key]
+        created_storage = true
+        Thread.current[key] = storage = @store.new(@file, :mode => "wc")
+      end
       begin
         result = yield(storage)
       ensure
-        storage.close
+        if created_storage
+          storage.close
+          Thread.current[key] = nil
+        end
       end
       result
-    end
-    
-    def read(&block)
-      access("rc", &block)
-    end
-    
-    def write(&block)
-      access("wc", &block)
     end
     
     def visitor_id(id)

@@ -1,4 +1,5 @@
-Add a slick Sinatra app for viewing tracking data.
+Allow protecting Psycho behind authentication
+Add ability to track goals in Psycho
 
 More unit tests
 

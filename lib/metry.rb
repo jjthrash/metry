@@ -5,6 +5,7 @@ require 'metry/rack/tracking'
 require 'metry/memory'
 require 'metry/tokyo'
 require 'metry/experiment'
+require 'metry/psycho'
 
 module Metry
   VERSION = '1.1.0'

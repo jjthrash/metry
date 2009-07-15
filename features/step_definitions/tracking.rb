@@ -6,6 +6,10 @@ Then /^there should be (\d+) tracking events?$/ do |event_count|
   assert_equal(event_count.to_i, Metry.current.event_count)
 end
 
+Then /^there should be (\d+) visitors$/ do |visitor_count|
+  assert_equal(visitor_count.to_i, Metry.current.visitor_count)
+end
+
 When /^there should be a tracking event "(\d+)":$/ do |id, table|
   event = Metry.current[id]
   assert event, "Unable to lookup event #{id}."
@@ -32,4 +36,8 @@ Then /^there should be a visitor "([^\"]*)":$/ do |id, table|
       assert_equal expected, visitor[hash["key"]], "Key #{hash["key"]} does not match."
     end
   end
+end
+
+Then /^there should be a visitor "([^\"]*)"$/ do |id|
+  assert Metry.current.visitor(id)
 end

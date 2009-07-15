@@ -1,0 +1,7 @@
+<h1>Visitor <%= @visitor.id %></h1>
+
+<ol>
+  <% @visitor.events.each do |event| %>
+    <li><%= event.path %></li>
+  <% end %>
+</ol>

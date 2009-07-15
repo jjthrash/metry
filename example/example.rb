@@ -4,9 +4,9 @@ require 'sinatra'
 require File.dirname(__FILE__) + '/../lib/metry'
 
 configure do
-  Metry.init Metry::Tokyo.new("tracking")
-  #Metry.init Metry::Memory.new
+  Metry.init(ENV["USE_MEMORY"] ? Metry::Memory.new : Metry::Tokyo.new("tracking"))
   use Metry::Rack::Tracking
+  use Metry::Psycho, "/admin/metry"
 end
 
 get '/' do

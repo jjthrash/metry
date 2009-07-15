@@ -1,5 +1,5 @@
 Feature: Access Tracking
-  In order to how users are using my site
+  In order to know how users are using my site
   As an web application creator
   I want to have all accesses to my application tracked
   
@@ -38,6 +38,7 @@ Feature: Access Tracking
     And there should be a tracking event "2":
       | key     | value |
       | visitor | 1     |
+    And there should be a visitor "1"
 
   Scenario: Two visitors are tracked
     Given I view "/"
@@ -49,6 +50,9 @@ Feature: Access Tracking
     And there should be a tracking event "2":
       | key     | value |
       | visitor | 2     |
+    And there should be 2 visitors
+    And there should be a visitor "1"
+    And there should be a visitor "2"
       
   Scenario: All facets should be tracked
     When I view "/"

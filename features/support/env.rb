@@ -16,7 +16,5 @@ World(Webrat::Matchers)
 
 require File.dirname(__FILE__) + '/../../example/example.rb'
 def app
-  Rack::Builder.new do
-    run Sinatra::Application
-  end
+  Sinatra::Application
 end

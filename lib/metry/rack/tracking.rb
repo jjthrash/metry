@@ -41,6 +41,7 @@ module Metry
       end
     
       def save_visitor(response, visitor)
+        @storage.save_visitor(visitor)
         response.set_cookie(COOKIE,
           :value => visitor,
           :expires => (Time.now+(60*60*24*365*20)),
