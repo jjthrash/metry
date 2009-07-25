@@ -2,27 +2,25 @@ require 'sinatra/base'
 
 module Metry
   class Psycho < Sinatra::Base
-    include Sinatra::Delegator
-    
     def initialize(app, path)
       super(app)
-      @path = path
+      self.class.class_eval do
+        set :views, File.dirname(__FILE__) + '/psycho'
 
-      set :views, File.dirname(__FILE__) + '/psycho'
-
-      get "#{@path}/?" do
-        @visitors = Visitor.all
-        erb :visitors
-      end
+        get "#{path}/?" do
+          @visitors = Visitor.all
+          erb :visitors
+        end
       
-      get "#{@path}/visitor/:id" do
-        @visitor = Visitor.find(params["id"])
-        erb :visitor
-      end
-
-      helpers do
-        define_method(:link_to) do |text, url|
-          %(<a href="#{path}#{url}">#{text}</a>)
+        get "#{path}/visitor/:id" do
+          @visitor = Visitor.find(params["id"])
+          erb :visitor
+        end
+      
+        helpers do
+          define_method(:link_to) do |text, url|
+            %(<a href="#{path}#{url}">#{text}</a>)
+          end
         end
       end
     end

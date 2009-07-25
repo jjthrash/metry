@@ -1,6 +1,6 @@
 <h1>Visitors</h1>
 <ul>
   <% @visitors.each do |v| %>
-    <li><%= link_to "Visitor #{v.id}", "/visitor/#{v.id}" %></li>
+    <li><%= link_to "Visitor #{v.id}", "/visitor/#{v.id}" %> (<%= v.events.size %> events)</li>
   <% end %>
 </ul>

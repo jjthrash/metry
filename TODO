@@ -1,5 +1,6 @@
 Allow protecting Psycho behind authentication
 Add ability to track goals in Psycho
+Allow ignoring requests in Metry, and have Psycho requests ignored
 
 More unit tests
 
