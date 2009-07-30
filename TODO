@@ -1,4 +1,4 @@
-Allow protecting Psycho behind authentication
+Switch to MongoDB
 Add ability to track goals in Psycho
 Allow ignoring requests in Metry, and have Psycho requests ignored
 

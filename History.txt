@@ -1,3 +1,8 @@
+=== 1.2.0 / 2009-07-30
+
+* Added Psycho for viewing Metry results.
+* Hooked up Psycho to Radiant authentication.
+
 === 1.1.0 / 2009-07-11
 
 * Moved Radiant initialization into the extension.
