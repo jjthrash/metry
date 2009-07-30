@@ -3,3 +3,4 @@ webrat.log
 *.tdb
 *.tch
 pkg
+*.tmproj

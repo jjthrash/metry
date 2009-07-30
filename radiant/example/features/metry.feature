@@ -6,7 +6,6 @@ Feature: Radiant support
   Background:
     Given an empty tracking database
     And I am a new visitor
-    And I have a layout
     And there is an empty Radiant cache
   
   Scenario: Basic Tracking

@@ -20,3 +20,7 @@ end
 Then /^I should see "([^\"]*)"$/ do |content|
   assert_contain(content)
 end
+
+Then /^I should be on "([^\"]*)"$/ do |path|
+  assert_equal path, URI.parse(current_url).path
+end

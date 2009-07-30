@@ -2,10 +2,24 @@ require 'sinatra/base'
 
 module Metry
   class Psycho < Sinatra::Base
-    def initialize(app, path)
+    def initialize(app, options={})
       super(app)
+      @options = options
+      path = options[:path] || "/psycho"
+      auth = options[:authorize] || proc{true}
+      on_deny = options[:on_deny] || proc{[403, {"Content-Type" => "text/plain"}, "You must log in."]}
+      
       self.class.class_eval do
         set :views, File.dirname(__FILE__) + '/psycho'
+        
+        before do
+          if unescape(@request.path_info) =~ /^#{path}/ && !auth.call(env)
+            reply = on_deny.call(env)
+            status reply.first
+            response.header.merge!(reply[1])
+            halt reply.last
+          end
+        end
 
         get "#{path}/?" do
           @visitors = Visitor.all

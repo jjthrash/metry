@@ -1,5 +1,7 @@
 require 'metry'
 
+load 'metry_authenticator.rb'
+
 class MetryExtension < Radiant::Extension
   version "1.0"
   description "Provides Metry support to Radiant."
@@ -25,6 +27,10 @@ class MetryExtension < Radiant::Extension
 
     Metry.init Metry::Tokyo.new(RAILS_ROOT + '/tracking/tracking')
     Rails.configuration.middleware.insert_after ActionController::Failsafe, Metry::Rack::Tracking
-    Rails.configuration.middleware.insert_after Rack::Head, proc{Metry::Psycho}, "/admin/metry"
+    Rails.configuration.middleware.use proc{Metry::Psycho}, {
+      :path => "/admin/metry",
+      :authorize => proc{|env| MetryAuthenticator.new(env).authorized?},
+      :on_deny => proc {|env| MetryAuthenticator.new(env).redirect},
+    }
   end
 end

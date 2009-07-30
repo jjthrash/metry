@@ -19,6 +19,7 @@ World(Rack::Test::Methods)
 
 $: << RAILS_ROOT + '/../../vendor/webrat/lib'
 require 'webrat'
+require 'webrat/rack_test'
 
 Webrat.configure do |config|
   config.mode = :rack_test
@@ -40,6 +41,11 @@ Before do
   end
   @__cucumber_ar_connection.begin_db_transaction
   ActionMailer::Base.deliveries = [] if defined?(ActionMailer::Base)
+
+  Layout.create!(:name => "basic", :content => <<EOC)
+<r:content />
+EOC
+  User.create!(:name => "Administrator", :login => "admin", :password => "radiant", :password_confirmation => "radiant", :admin => true)
 end
 
 After do
