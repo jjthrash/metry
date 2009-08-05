@@ -1,17 +1,15 @@
 $: << File.dirname(__FILE__)
-$: << File.dirname(__FILE__) + '/../vendor/rufus-tokyo/lib'
 
+require 'metry/storage'
 require 'metry/rack/tracking'
-require 'metry/memory'
-require 'metry/tokyo'
 require 'metry/experiment'
 require 'metry/psycho'
 
 module Metry
   VERSION = '1.2.0'
   
-  def self.init(storage)
-    @storage = storage
+  def self.init(dbname)
+    @storage = Storage.new(dbname)
   end
   
   def self.current

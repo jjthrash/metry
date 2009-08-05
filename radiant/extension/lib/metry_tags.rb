@@ -6,6 +6,7 @@ module MetryTags
     tag.globals.page.metry_active = true
     tag.locals.alternatives = {}
     tag.locals.event = tag.globals.page.request.env["metry.event"]
+    tag.locals.visitor = tag.globals.page.request.env["metry.visitor"]
     tag.expand
   end
   
@@ -13,7 +14,7 @@ module MetryTags
   tag "metry:experiment" do |tag|
     control = tag.expand
     options = tag.locals.alternatives.merge("control" => control)
-    Metry::Experiment.new(tag.attr["name"], tag.locals.event).choose(options, tag.attr["method"])
+    Metry::Experiment.new(tag.attr["name"], tag.locals.event, tag.locals.visitor).choose(options, tag.attr["method"])
   end
   
   desc %{ Alternatives go in here with a name. }

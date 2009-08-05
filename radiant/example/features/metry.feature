@@ -52,24 +52,24 @@ Feature: Radiant support
     Then there should be a tracking event "1":
       | key | value |
       | visitor | 1 |
-      | experiment.header | control |
+      | experiment:header | control |
     Then there should be a tracking event "2":
       | key | value |
       | visitor | 2 |
-      | experiment.header | grumpy |
+      | experiment:header | grumpy |
     Then there should be a tracking event "3":
       | key | value |
       | visitor | 3 |
-      | experiment.header | dopey |
+      | experiment:header | dopey |
     Then there should be a visitor "1":
       | key | value |
-      | experiment.header | control |
+      | experiment:header | control |
     Then there should be a visitor "2":
       | key | value |
-      | experiment.header | grumpy |
+      | experiment:header | grumpy |
     Then there should be a visitor "3":
       | key | value |
-      | experiment.header | dopey |
+      | experiment:header | dopey |
       
   Scenario: Multiple access by same visitor should give same result
     Given a page at "/" containing:
@@ -106,10 +106,10 @@ Feature: Radiant support
     When I view "/" 2 times
     Then there should be a tracking event "1":
       | key | value |
-      | experiment.cached | control |
+      | experiment:cached | control |
     Then there should be a tracking event "2":
       | key | value |
-      | experiment.cached | control |
+      | experiment:cached | control |
   
   Scenario: rand method should give reasonable experiment distribution
     Given a page at "/" containing:

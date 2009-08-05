@@ -45,7 +45,7 @@ module Metry
       end
       
       def self.find(id)
-        new(Metry.current.visitor(id).merge(:pk => id))
+        new(Metry.current.visitor(id))
       end
 
       def initialize(visitor)
@@ -53,7 +53,7 @@ module Metry
       end
       
       def id
-        @visitor[:pk]
+        @visitor['_id']
       end
       
       def events

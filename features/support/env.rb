@@ -14,6 +14,9 @@ World(Rack::Test::Methods)
 World(Webrat::Methods)
 World(Webrat::Matchers)
 
+require 'metry'
+Metry::Storage.predictable_keys = true
+
 require File.dirname(__FILE__) + '/../../example/example.rb'
 def app
   Sinatra::Application

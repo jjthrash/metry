@@ -25,6 +25,9 @@ Webrat.configure do |config|
   config.mode = :rack_test
 end
 
+require 'metry'
+Metry::Storage.predictable_keys = true
+
 def app
   ActionController::Dispatcher.new
 end

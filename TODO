@@ -1,14 +1,12 @@
 Switch to MongoDB
 Add ability to track goals in Psycho
 Allow ignoring requests in Metry, and have Psycho requests ignored
+Switch to submodules for vendor'd libs
 
 More unit tests
 
 Add support for non-pageview event tracking
   Via in-process call
   Via web request
-
-Add support for MongoDB
-Add support for Tokyo Tyrant
 
 Metry visitors can be spoofed - fix it

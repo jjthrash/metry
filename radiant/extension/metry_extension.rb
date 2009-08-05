@@ -25,7 +25,7 @@ class MetryExtension < Radiant::Extension
       alias_method_chain :cache?, :metry
     end
 
-    Metry.init Metry::Tokyo.new(RAILS_ROOT + '/tracking/tracking')
+    Metry.init 'radiant-tracking'
     Rails.configuration.middleware.insert_after ActionController::Failsafe, Metry::Rack::Tracking
     Rails.configuration.middleware.use proc{Metry::Psycho}, {
       :path => "/admin/metry",
